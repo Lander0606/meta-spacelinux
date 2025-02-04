@@ -1,11 +1,10 @@
 DISTRO = "spacelinux"
-DISTRO_NAME = "OE4Tegra Demonstration Distro"
-DISTRO_VERSION_BASE = "5.0.6"
-DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${METADATA_REVISION}"
+DISTRO_NAME = "Tegra Linux for Space (OS for Jetson based SoCs)"
+DISTRO_VERSION_BASE = "1.0.0"
+DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
 DISTRO_CODENAME = "master"
 SDK_VENDOR = "-tdsdk"
-SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${METADATA_REVISION}','snapshot')}"
-SDK_VERSION[vardepvalue] = "${SDK_VERSION}"
+SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
 
 MAINTAINER = "OE4Tegra team <oe4tegra@madison.systems>"
 
