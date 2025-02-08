@@ -1,1 +1,1 @@
-# linux4space-distro
+# Yocto meta-spacelinux Distro
