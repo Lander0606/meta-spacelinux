@@ -1,12 +1,12 @@
 DISTRO = "spacelinux"
-DISTRO_NAME = "Tegra Linux for Space (OS for Jetson based SoCs)"
+DISTRO_NAME = "SpaceLinux (Tegra Linux for Space)"
 DISTRO_VERSION_BASE = "1.0.0"
 DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
 DISTRO_CODENAME = "master"
-SDK_VENDOR = "-tdsdk"
+SDK_VENDOR = "-slsdk"
 SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
 
-MAINTAINER = "OE4Tegra team <oe4tegra@madison.systems>"
+#MAINTAINER = "OE4Tegra team <oe4tegra@madison.systems>"
 
 TARGET_VENDOR = "-oe4t"
 
@@ -35,6 +35,8 @@ TCLIBCAPPEND = ""
 PACKAGE_CLASSES ?= "package_rpm"
 
 SANITY_TESTED_DISTROS ?= " \
+            fedora-40 \n \
+            fedora-41 \n \
             ubuntu-20.04 \n \
             ubuntu-22.04 \n \
             ubuntu-24.04 \n \
