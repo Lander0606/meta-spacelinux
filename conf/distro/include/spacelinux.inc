@@ -1,6 +1,6 @@
 DISTRO = "spacelinux"
 DISTRO_NAME = "SpaceLinux (Tegra Linux for Space)"
-DISTRO_VERSION_BASE = "1.0.0"
+DISTRO_VERSION_BASE = "1.0.1"
 DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
 DISTRO_CODENAME = "master"
 SDK_VENDOR = "-slsdk"
@@ -24,13 +24,11 @@ DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${TD_DEFAULT_DISTRO_FEATURES}"
 
 # Spacelinux uses the newer linux-yocto kernel
 PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
-PREFERRED_VERSION_linux-yocto ?= "6.6%"
-PREFERRED_VERSION_linux-yocto-rt ?= "6.6%"
+PREFERRED_VERSION_linux-yocto ?= "6.12%"
+PREFERRED_VERSION_linux-yocto-rt ?= "6.12%"
 
 SDK_NAME = "${DISTRO}-${TCLIBC}-${SDKMACHINE}-${IMAGE_BASENAME}-${TUNE_PKGARCH}-${MACHINE}"
 SDKPATHINSTALL = "/opt/${DISTRO}/${SDK_VERSION}"
-
-TCLIBCAPPEND = ""
 
 PACKAGE_CLASSES ?= "package_rpm"
 
