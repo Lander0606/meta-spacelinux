@@ -1,6 +1,6 @@
 DISTRO = "spacelinux"
 DISTRO_NAME = "SpaceLinux (Tegra Linux for Space)"
-DISTRO_VERSION_BASE = "1.0.1"
+DISTRO_VERSION_BASE = "1.0.2"
 DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
 DISTRO_CODENAME = "master"
 SDK_VENDOR = "-slsdk"
@@ -18,9 +18,10 @@ REQUIRED_TD_BBLAYERS_CONF_VERSION = "${DISTRO}-5"
 
 LOCALCONF_VERSION = "2"
 
-TD_DEFAULT_DISTRO_FEATURES = "largefile opengl ptest multiarch wayland vulkan systemd pam virtualization usrmerge"
+# Default: SPACELINUX_DISTRO_FEATURES = "acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc x11 vfat seccomp largefile opengl ptest multiarch vulkan systemd pam virtualization usrmerge systemd usrmerge pulseaudio gobject-introspection-data ldconfig"
+SPACELINUX_DISTRO_FEATURES = "acl debuginfod ext2 ipv4 ipv6 usbgadget usbhost wifi xattr nfs zeroconf pci 3g vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
 
-DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${TD_DEFAULT_DISTRO_FEATURES}"
+DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
 
 # Spacelinux uses the newer linux-yocto kernel
 PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
