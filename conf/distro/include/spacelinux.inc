@@ -1,12 +1,12 @@
 DISTRO = "spacelinux"
 DISTRO_NAME = "SpaceLinux (Tegra Linux for Space)"
-DISTRO_VERSION_BASE = "1.0.2"
+DISTRO_VERSION_BASE = "1.0.3"
 DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
 DISTRO_CODENAME = "master"
 SDK_VENDOR = "-slsdk"
 SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
 
-#MAINTAINER = "OE4Tegra team <oe4tegra@madison.systems>"
+MAINTAINER = "[KU Leuven - Campus Group T] Lander Van Loock & Kobe Michiels"
 
 TARGET_VENDOR = "-oe4t"
 
@@ -24,6 +24,7 @@ SPACELINUX_DISTRO_FEATURES = "acl debuginfod ext2 ipv4 ipv6 usbgadget usbhost wi
 DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
 
 # Spacelinux uses the newer linux-yocto kernel
+# Prefer the newest kernel if available
 PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
 PREFERRED_VERSION_linux-yocto ?= "6.12%"
 PREFERRED_VERSION_linux-yocto-rt ?= "6.12%"
