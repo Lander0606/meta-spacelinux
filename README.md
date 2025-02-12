@@ -1,11 +1,13 @@
 # Yocto Spacelinux Distro
 
-Space-applications distribution for NVIDIA Jetson platforms using Yocto Project tools and the [meta-tegra](https://github.com/OE4T/meta-tegra) BSP layer. The development of this distribution is part of a master's thesis ["Design and simplification of a Linux Operating System (OS) for space"](https://github.com/michielskobe/thesis-linux-in-space). This research is done in the context of the Master of Science program in the field of Electronics - ICT with specialization in software systems at KU Leuven in Leuven, Belgium.
+Space-applications embedded Linux distribution for **NVIDIA Jetson platforms** using Yocto Project tools and the [meta-tegra](https://github.com/OE4T/meta-tegra) BSP layer. The development of this distribution is part of a master's thesis ["Design and simplification of a Linux Operating System (OS) for space"](https://github.com/michielskobe/thesis-linux-in-space). This research is done in the context of the Master of Science program in the field of Electronics - ICT with specialization in software systems at KU Leuven in Leuven, Belgium.
 
 ## Prerequisites
 See the [Yocto Project Quick Build documentation](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) for information on setting up a build host.
 
-**Important:** the `spacelinux` distro is only compatible with the `scarthgap` and `styhead` release of the Yocto Project/Poky.
+**Important notes:** 
+- This `meta-spacelinux` layer is only compatible with the `scarthgap` and `styhead` release of the Yocto Project/Poky.
+- The `spacelinux` distro only supports boards in the **NVIDIA Tegra SoC family**, this choice has been made to reduce the size and complexity of the kernel
 
 ## Set up
 
