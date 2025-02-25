@@ -19,9 +19,14 @@ REQUIRED_TD_BBLAYERS_CONF_VERSION = "${DISTRO}-5"
 LOCALCONF_VERSION = "2"
 
 # Default: SPACELINUX_DISTRO_FEATURES = "acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc x11 vfat seccomp largefile opengl ptest multiarch vulkan systemd pam virtualization usrmerge systemd usrmerge pulseaudio gobject-introspection-data ldconfig"
-SPACELINUX_DISTRO_FEATURES = "acl debuginfod ext2 ipv4 ipv6 usbgadget usbhost wifi xattr nfs zeroconf pci 3g vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
-
+SPACELINUX_DISTRO_FEATURES = "acl ext2 ipv4 ipv6 usbgadget usbhost xattr nfs zeroconf pci 3g vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
 DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
+
+# Remove machine features
+MACHINE_FEATURES:remove = "alsa wifi bluetooth"
+
+# CPU 4 and 5 are tickless (adaptive tick mode)
+KERNEL_ARGS:append = " nohz_full=4,5"
 
 # Spacelinux uses the newer linux-yocto kernel
 # Prefer the newest kernel if available
@@ -52,4 +57,11 @@ INHERIT += "uninative"
 
 LICENSE_FLAGS_ACCEPTED += "commercial_faad2 commercial_x264"
 
+# Enable/disable filesystem redundancy
 USE_REDUNDANT_FLASH_LAYOUT_DEFAULT ?= "0"
+
+# Set the filesystem to btrfs (EXPERIMENTAL)
+IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
+
+# Enable RAID to enable data scrubbing with NVIDIA filesystem redundancy
+#EXTRA_IMAGECMD:append:btrfs = "-d raid1 -m raid1 /dev/mmcblk0p1 /dev/mmcblk0p2"
