@@ -7,4 +7,4 @@ Upstream-Status: Inappropriate [configuration-specific]
 +++ b/fstab
 @@ -1,1 +1,1 @@
 -/dev/root            /                    auto       defaults              1  1
-+/dev/root            /                    btrfs      defaults              0  0
++/dev/root            /                    btrfs      defaults              0  1
