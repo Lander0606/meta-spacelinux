@@ -1,5 +1,5 @@
-# Ensure that every image has at least a ssh server
-IMAGE_FEATURES += "ssh-server-openssh"
+# Ensure that every image has at least a ssh server and package manager like dnf
+IMAGE_FEATURES += "ssh-server-openssh package-management"
 
 LICENSE = "MIT"
 
