@@ -1,6 +1,3 @@
-[submodule "repos/repos/meta-swupdate"]
-	path = repos/repos/meta-swupdate
-	url = https://github.com/sbabic/meta-swupdate
 [submodule "repos/meta-swupdate"]
 	path = repos/meta-swupdate
 	url = https://github.com/sbabic/meta-swupdate

@@ -58,11 +58,7 @@ INHERIT += "uninative"
 LICENSE_FLAGS_ACCEPTED += "commercial_faad2 commercial_x264"
 
 # Enable/disable filesystem redundancy
-<<<<<<< HEAD
 USE_REDUNDANT_FLASH_LAYOUT_DEFAULT = "1"
-=======
-USE_REDUNDANT_FLASH_LAYOUT_DEFAULT ?= "1"
->>>>>>> be226ff (Enabled swupdate)
 
 # Set the filesystem to btrfs (EXPERIMENTAL)
 IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
