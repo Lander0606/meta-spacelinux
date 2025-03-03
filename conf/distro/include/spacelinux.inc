@@ -58,10 +58,23 @@ INHERIT += "uninative"
 LICENSE_FLAGS_ACCEPTED += "commercial_faad2 commercial_x264"
 
 # Enable/disable filesystem redundancy
+<<<<<<< HEAD
 USE_REDUNDANT_FLASH_LAYOUT_DEFAULT = "1"
+=======
+USE_REDUNDANT_FLASH_LAYOUT_DEFAULT ?= "1"
+>>>>>>> be226ff (Enabled swupdate)
 
 # Set the filesystem to btrfs (EXPERIMENTAL)
 IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
 
 # Enable RAID to enable data scrubbing with NVIDIA filesystem redundancy
 #EXTRA_IMAGECMD:append:btrfs = "-d raid1 -m raid1 /dev/mmcblk0p1 /dev/mmcblk0p2"
+
+# Enable swupdate
+IMAGE_INSTALL:append = " swupdate"
+USE_REDUNDANT_FLASH_LAYOUT = "1"
+IMAGE_FSTYPES:append = " tar.gz btrfs"
+
+SWUPDATE_CORE_IMAGE_NAME = "spacelinux-image-base"
+CONFIG_BTRFS_FILESYSTEM = "1"
+ROOTFS_FILENAME ?= "${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.btrfs"
