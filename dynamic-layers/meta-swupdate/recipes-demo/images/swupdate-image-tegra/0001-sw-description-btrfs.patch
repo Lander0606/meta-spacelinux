@@ -1,0 +1,46 @@
+From: Kobe Michiels <kobe.michiels@outlook.com>
+Date: 05-03-2025 1201
+Subject: [PATCH] Change of filesystem type for sw-description from ext4 to btrfs
+
+Upstream-Status: Inappropriate [configuration-specific]
+
+diff --git a/sw-description
+index 871ab8e..0577d2b 100644
+--- a/sw-description
++++ b/sw-description
+@@ -11,7 +11,7 @@ software =
+ 						type = "diskformat";
+ 						device = "@@ROOTFS_DEVICE_PATH@@/APP_b";
+ 						properties: {
+-							fstype = "ext4";
++							fstype = "btrfs";
+ 							force = "true";
+ 						}
+ 					}
+@@ -21,7 +21,7 @@ software =
+ 						filename = "@@ROOTFS_FILENAME@@";
+ 						type = "archive";
+ 						device = "@@ROOTFS_DEVICE_PATH@@/APP_b";
+-						filesystem = "ext4";
++						filesystem = "btrfs";
+ 						path = "/";
+ 						installed-directly = true;
+ 						preserve-attributes = true;
+@@ -59,7 +59,7 @@ software =
+ 						type = "diskformat";
+ 						device = "@@ROOTFS_DEVICE_PATH@@/APP";
+ 						properties: {
+-							fstype = "ext4";
++							fstype = "btrfs";
+ 							force = "true";
+ 						}
+ 					}
+@@ -69,7 +69,7 @@ software =
+ 						filename = "@@ROOTFS_FILENAME@@";
+ 						type = "archive";
+ 						device = "@@ROOTFS_DEVICE_PATH@@/APP";
+-						filesystem = "ext4";
++						filesystem = "btrfs";
+ 						path = "/";
+ 						installed-directly = true;
+ 						preserve-attributes = true;
