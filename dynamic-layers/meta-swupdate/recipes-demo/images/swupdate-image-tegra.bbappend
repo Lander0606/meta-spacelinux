@@ -1,1 +1,2 @@
-SRC_URI:append = " file://0001-sw-description-btrfs.patch"
+FILESEXTRAPATHS:append := "${THISDIR}/${PN}:"
+SRC_URI:append = "${@' file://0001-sw-description-btrfs.patch' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else ''}"
