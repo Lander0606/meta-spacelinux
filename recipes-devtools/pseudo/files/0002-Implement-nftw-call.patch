@@ -1,0 +1,297 @@
+From 04cba5c9532e2b9f9f50b247c616ad2a0f5d4228 Mon Sep 17 00:00:00 2001
+From: Gyorgy Sarvari <skandigraun@gmail.com>
+Date: Mon, 3 Mar 2025 12:25:23 +0100
+Subject: [PATCH] Implement nftw call
+
+Partial implementation of nftw call. Most notably FTW_MOUNT,
+FTW_MOUNT and FTW_ACTIONRETVAL are bit implemented.
+
+This call is at least required by btrfs-tools to generate the filesystem
+with correct ownership details.
+
+Upstream-Status: Pending
+---
+ ports/unix/guts/nftw.c | 270 ++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 269 insertions(+), 1 deletion(-)
+
+diff --git a/ports/unix/guts/nftw.c b/ports/unix/guts/nftw.c
+index dac3106..1dbbea3 100644
+--- a/ports/unix/guts/nftw.c
++++ b/ports/unix/guts/nftw.c
+@@ -9,7 +9,275 @@
+  *	int rc = -1;
+  */
+ 
+-	rc = real_nftw(path, fn, nopenfd, flag);
++     int cwdfd = -1; // hold the original working dir's fd
++     char *cwd = NULL; // if we can't get cwdfd, store working dir's name here
++     struct dirent *d; // current dirent being iterated
++     char** dirlist = NULL; // list of all subdirectories to be walked
++     size_t dirlist_size = 0;
++     size_t dirlist_idx = 0;
++     size_t base_level = 0; // depth of the "path" argument. It is subtracted
++                            // from the depth of the individual entries
++     char pathbuf[1025]; // this path's content is being iterated
++     char cur_pathbuf[1025]; // this path is currently processed, within pathbuf
++     struct FTW ftw; // struct to be passed to "fn"
++     DIR *dir; // the currently iterated directory stream
++     struct stat st; // stat to send to "fn"
++     dev_t orig_dev; // the device of the top "path"
++
++     ino_t *inode_list = NULL;
++     size_t inode_list_size = 0, inode_list_capacity = 0;
++
++     // does path make sense?
++     if (path[0] == '\0'){
++         errno = ENOENT;
++         rc = -1;
++         goto nftw_out_fail;
++     }
++
++     /*if (flag & FTW_DEPTH || flag & FTW_ACTIONRETVAL)
++         pseudo_diag("Warning: nftw was called with unimplemented flags. \
++                      Please report it with the recipe name that triggered this.\n");*/
++
++     // if FTW_CHDIR is set, save the current directory,
++     // so at the end we can restore it
++     if (flag & FTW_CHDIR){
++         cwdfd = open(".", O_RDONLY | O_DIRECTORY);
++         if (cwdfd == -1){
++             // Uff. Try getting the directory name
++             if (errno == EACCES)
++                 cwd = getcwd(NULL, 0);
++
++             if (cwd == NULL){
++                 rc = -1;
++                 goto nftw_out_fail;
++             }
++         }
++     }
++
++     if (flag & FTW_MOUNT){
++         if (((flag & FTW_PHYS)
++               ? lstat(path, &st)
++               : stat(path, &st)) < 0) {
++             printf("nftw: could not stat top dir: %s\n", path);
++             rc = -1;
++             goto nftw_out_fail;
++         } else {
++             orig_dev = st.st_dev;
++         }
++     }
++
++     dirlist = malloc(++dirlist_size * sizeof(char*));
++     dirlist[dirlist_idx] = malloc(strlen(path) + 1);
++     strcpy(dirlist[dirlist_idx], path);
++
++     // check how many level deep the original path is
++     for (size_t i = 0; path[i] != '\0'; ++i){
++         if (path[i] == '/')
++             ++base_level;
++     }
++
++     for (size_t i = 0; path[i] != '\0'; ++i){
++           if (path[i] == '/'){
++               ftw.base = i + 1;
++           }
++     }
++
++     /*
++      * Walk the tree.
++      * Without modifying flags:
++      * 1. Take the top folder from the list
++      * 2. Stat it, call fn
++      * 3. Collect all files from the folder, stat them, and call fn
++      * 4. Collect all folders from the folder, and add them to the list
++      */
++     while (dirlist_size > 0){
++         ftw.level = -base_level;
++         ftw.base = 0;
++
++         //1. take the top folder from the list
++         //strcpy(pathbuf, dirlist[dirlist_idx++]);
++         // actually make it the last one
++         strcpy(pathbuf, dirlist[dirlist_size - 1]);
++
++         // delete the last from dirlist
++         free(dirlist[dirlist_size - 1]);
++         dirlist = realloc(dirlist, --dirlist_size * sizeof(char*));
++
++         for (size_t i = 0; pathbuf[i] != '\0'; ++i){
++             if (pathbuf[i] == '/'){
++                 ftw.level++;
++                 ftw.base = i + 1;
++             }
++         }
++
++         //2. stat it, call fn
++         if (flag & FTW_CHDIR){
++             chdir(pathbuf);
++             chdir("..");
++         }
++
++         if (((flag & FTW_PHYS)
++               ? lstat(pathbuf, &st)
++               : stat(pathbuf, &st)) < 0) {
++
++             if (!(flag & FTW_PHYS)
++                   && errno == ENOENT
++                   && lstat(pathbuf, &st) == 0
++                   && S_ISLNK(st.st_mode)){
++
++                 if ((flag & FTW_MOUNT) && orig_dev != st.st_dev)
++                     continue;
++
++                 // existing symlink, but points to a non-existing file
++                 rc = fn(pathbuf, &st, FTW_SLN, &ftw);
++             } else {
++                 printf("nftw: could not access path: "
++                                             "%s, bailing out!\n", pathbuf);
++                 rc = -1;
++             }
++         } else {
++             int duplicate = 0;
++             for (size_t i = 0; i < inode_list_size; ++i) {
++                 if (inode_list[i] == st.st_ino) {
++                     duplicate = 1;
++                     break;
++                 }
++             }
++             if (duplicate) continue;
++
++             if ((flag & FTW_MOUNT) && orig_dev != st.st_dev)
++                 continue;
++
++             if (inode_list_size == inode_list_capacity) {
++                 size_t new_capacity = (inode_list_capacity == 0) ? 16 : inode_list_capacity * 2;
++                 ino_t *temp = realloc(inode_list, new_capacity * sizeof(ino_t));
++                 if (!temp) {
++                     rc = -1;
++                 }
++                 inode_list = temp;
++                 inode_list_capacity = new_capacity;
++             }
++             inode_list[inode_list_size++] = st.st_ino;
++
++             int ent_flag = S_ISDIR(st.st_mode) ? FTW_D :
++                            S_ISLNK(st.st_mode) ? FTW_SL : FTW_F;
++             rc = fn(pathbuf, &st, ent_flag, &ftw);
++         }
++
++         if (rc < 0)
++             goto nftw_out_fail;
++
++         //3. Collect all files from the folder, stat them, and call fn
++         dir = opendir(pathbuf);
++         if (!dir){
++             rc = -1;
++             goto nftw_out_fail;
++         }
++
++         while ((d = readdir(dir)) != NULL){
++             if ((strcmp(d->d_name, ".") == 0) || strcmp(d->d_name, "..") == 0){
++                 continue;
++             }
++
++             ftw.level = -base_level;
++             ftw.base = 0;
++
++             strcpy(cur_pathbuf, pathbuf);
++             strcat(cur_pathbuf, "/");
++             strcat(cur_pathbuf, d->d_name);
++
++             for (size_t i = 0; cur_pathbuf[i] != '\0'; ++i){
++                 if (cur_pathbuf[i] == '/'){
++                     ftw.level++;
++                     ftw.base = i + 1;
++                 }
++             }
++
++             // 4. Collect all folders from the folder, and add them to the list
++             if (d->d_type == DT_DIR) {
++                 dirlist = realloc(dirlist, ++dirlist_size * sizeof(char*));
++                 dirlist[dirlist_size - 1] = malloc(strlen(cur_pathbuf) + 1);
++                 strcpy(dirlist[dirlist_size - 1], cur_pathbuf);
++                 continue;
++             }
++
++             if (flag & FTW_CHDIR){
++                 chdir(pathbuf);
++             }
++
++             // get stat from pseudo
++             if (((flag & FTW_PHYS)
++                   ? lstat(cur_pathbuf, &st)
++                   : stat(cur_pathbuf, &st)) < 0) {
++
++                 if (!(flag & FTW_PHYS)
++                       && errno == ENOENT
++                       && lstat(cur_pathbuf, &st) == 0
++                       && S_ISLNK(st.st_mode)){
++
++                     if ((flag & FTW_MOUNT) && orig_dev != st.st_dev)
++                         continue;
++
++                     // existing symlink, but points to a non-existing file
++                     rc = fn(cur_pathbuf, &st, FTW_SLN, &ftw);
++                 } else {
++                     printf("nftw: could not access path: "
++                                                 "%s, bailing out!\n", pathbuf);
++                     rc = -1;
++                 }
++             } else {
++                 int duplicate = 0;
++                 for (size_t i = 0; i < inode_list_size; ++i) {
++                     if (inode_list[i] == st.st_ino) {
++                         duplicate = 1;
++                         break;
++                     }
++                 }
++                 if (duplicate) continue;
++
++                 if ((flag & FTW_MOUNT) && orig_dev != st.st_dev)
++                     continue;
++
++                 if (inode_list_size == inode_list_capacity) {
++                     size_t new_capacity = (inode_list_capacity == 0) ? 16 : inode_list_capacity * 2;
++                     ino_t *temp = realloc(inode_list, new_capacity * sizeof(ino_t));
++                     if (!temp) {
++                         rc = -1;
++                         goto nftw_out_fail;
++                     }
++                     inode_list = temp;
++                     inode_list_capacity = new_capacity;
++                 }
++                 inode_list[inode_list_size++] = st.st_ino;
++
++                 int ent_flag = S_ISDIR(st.st_mode) ? FTW_D :
++                                S_ISLNK(st.st_mode) ? FTW_SL : FTW_F;
++                 rc = fn(cur_pathbuf, &st, ent_flag, &ftw);
++             }
++
++
++         }
++     }
++
++ nftw_out_fail:
++     // get back to the original folder, if needed
++     if (cwdfd != -1){
++         int save_errno = errno;
++         fchdir(cwdfd);
++         close(cwdfd);
++         errno = save_errno;
++     } else if (cwd != NULL){
++         int save_errno = errno;
++         chdir(cwd);
++         free(cwd);
++         errno = save_errno;
++     }
++
++     for (size_t i = 0; i < dirlist_size; ++i)
++         free(dirlist[i]);
++
++     free(dirlist);
++     free(inode_list);
+ 
+ /*	return rc;
+  * }
