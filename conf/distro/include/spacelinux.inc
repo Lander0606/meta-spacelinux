@@ -63,8 +63,11 @@ USE_REDUNDANT_FLASH_LAYOUT_DEFAULT = "1"
 # Set the filesystem to btrfs (EXPERIMENTAL)
 IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
 
+# Compress the filesystem while creating it
+EXTRA_IMAGECMD:append:btrfs = " --csum sha256"
+
 # Enable RAID to enable data scrubbing with NVIDIA filesystem redundancy
-#EXTRA_IMAGECMD:append:btrfs = "-d raid1 -m raid1 /dev/mmcblk0p1 /dev/mmcblk0p2"
+#EXTRA_IMAGECMD:append:btrfs = " -d raid1 -m raid1"
 
 # Enable swupdate
 IMAGE_INSTALL:append = " swupdate"
