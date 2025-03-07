@@ -19,7 +19,7 @@ REQUIRED_TD_BBLAYERS_CONF_VERSION = "${DISTRO}-5"
 LOCALCONF_VERSION = "2"
 
 # Default: SPACELINUX_DISTRO_FEATURES = "acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc x11 vfat seccomp largefile opengl ptest multiarch vulkan systemd pam virtualization usrmerge systemd usrmerge pulseaudio gobject-introspection-data ldconfig"
-SPACELINUX_DISTRO_FEATURES = "acl ext2 ipv4 ipv6 usbgadget usbhost xattr nfs zeroconf pci 3g vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
+SPACELINUX_DISTRO_FEATURES = "acl ipv4 ipv6 usbgadget usbhost xattr zeroconf pci vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
 DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
 
 # Remove machine features
@@ -60,14 +60,12 @@ LICENSE_FLAGS_ACCEPTED += "commercial_faad2 commercial_x264"
 # Enable/disable filesystem redundancy
 USE_REDUNDANT_FLASH_LAYOUT_DEFAULT = "1"
 
-# Set the filesystem to btrfs (EXPERIMENTAL)
+# Set the filesystem to btrfs
 IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
 
 # Compress the filesystem while creating it
 EXTRA_IMAGECMD:append:btrfs = " --csum sha256"
-
-# Enable RAID to enable data scrubbing with NVIDIA filesystem redundancy
-#EXTRA_IMAGECMD:append:btrfs = " -d raid1 -m raid1"
+EXTRA_IMAGECMD:remove:btrfs = " --shrink"
 
 # Enable swupdate
 IMAGE_INSTALL:append = " swupdate"
