@@ -5,6 +5,7 @@ SRC_URI:append:tegra = " \
     file://enable_full_preemptible.cfg \
     file://remove_unneccessary_drivers.cfg \
     file://enable_crypto_and_integrity.cfg \
+    file://remove_bt_wifi.cfg \
 "
 
 SRC_URI:remove:tegra = " \
