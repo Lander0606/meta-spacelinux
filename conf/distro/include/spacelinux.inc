@@ -23,7 +23,10 @@ SPACELINUX_DISTRO_FEATURES = "acl ipv4 ipv6 usbgadget usbhost xattr zeroconf pci
 DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
 
 # Remove machine features
-MACHINE_FEATURES:remove = "alsa wifi bluetooth"
+MACHINE_FEATURES:remove = "alsa wifi bluetooth ext2"
+
+# Remove unused machine recommended modules
+MACHINE_EXTRA_RRECOMMENDS:remove = "kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus"
 
 # CPU 4 and 5 are tickless (adaptive tick mode)
 KERNEL_ARGS:append = " nohz_full=4,5"
@@ -63,7 +66,7 @@ USE_REDUNDANT_FLASH_LAYOUT_DEFAULT = "1"
 # Set the filesystem to btrfs
 IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
 
-# Compress the filesystem while creating it
+# Change the commands for the btrfs filesystem generation
 EXTRA_IMAGECMD:append:btrfs = " --csum sha256"
 EXTRA_IMAGECMD:remove:btrfs = " --shrink"
 
