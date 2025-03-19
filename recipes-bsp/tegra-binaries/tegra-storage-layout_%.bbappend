@@ -1,8 +1,10 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/files:"
-SRC_URI += "file://flash-orin-nano-custom-raid-layout.xml"
-PARTITION_LAYOUT_TEMPLATE = "flash-orin-nano-custom-raid-layout.xml"
+OVERRIDES .= ":${IMAGE_TEGRAFLASH_FS_TYPE}"
 
-do_compile:prepend() {
+FILESEXTRAPATHS:prepend:btrfs := "${THISDIR}/files:"
+SRC_URI:btrfs += "file://flash-orin-nano-custom-raid-layout.xml"
+PARTITION_LAYOUT_TEMPLATE:btrfs = "flash-orin-nano-custom-raid-layout.xml"
+
+do_compile:prepend:btrfs() {
     cp ${WORKDIR}/sources-unpack/flash-orin-nano-custom-raid-layout.xml ${B}/flash-orin-nano-custom-raid-layout.xml || bberror "Kopieerfout!"
 }
-PARTITION_FILE = "${B}/flash-orin-nano-custom-raid-layout.xml"
+PARTITION_FILE:btrfs = "${B}/flash-orin-nano-custom-raid-layout.xml"

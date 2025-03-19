@@ -12,7 +12,7 @@ part2_file=$(ls *part2.btrfs 2>/dev/null)
 
 # Check if all needed partitions are found
 if [ -z "$part1_file" ] || [ -z "$part2_file" ]; then
-  echo "ERROR: 2 btrfs partitions are needed to create a raid1 system"
+  echo "ERROR: 2 BTRFS partitions are needed to create a raid1 system"
   exit
 else
   echo "Found partition 1: $part1_file"

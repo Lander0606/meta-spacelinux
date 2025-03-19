@@ -15,23 +15,30 @@ inherit nopackages
 IMAGE_INSTALL:append = " htop btrfs-tools gptfdisk"
 
 # Create two identical filesystem files (for the two partitions)
-inherit image_types_btrfs_raid1
+inherit image_types_btrfs_custom
 
 # Add extra files to tegraflash
 inherit image_types_tegra
 
-IMAGE_TEGRAFLASH_ROOTFS = "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}"
+python __anonymous() {
+    if d.getVar('IMAGE_TEGRAFLASH_FS_TYPE') == "btrfs":
+        d.setVar('IMAGE_TEGRAFLASH_ROOTFS', "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}")
+}
 
-tegraflash_custom_pre() {    
-    # Copy the second rootfs partition
-    cp "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}_part2.${IMAGE_TEGRAFLASH_FS_TYPE}" ./${IMAGE_BASENAME}_part2.${IMAGE_TEGRAFLASH_FS_TYPE}
+tegraflash_custom_pre() {
+    if [ "${IMAGE_TEGRAFLASH_FS_TYPE}" = "btrfs" ]; then
+        # Copy the second rootfs partition
+        cp "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}_part2.${IMAGE_TEGRAFLASH_FS_TYPE}" ./${IMAGE_BASENAME}_part2.${IMAGE_TEGRAFLASH_FS_TYPE}
 
-    # Add a raid1 flash script
-    cp ${SCRIPTS_DIR}/flash-btrfs-raid-image.sh ./flash-btrfs-raid-image.sh
-    chmod +x flash-btrfs-raid-image.sh
+        # Add a raid1 flash script
+        cp ${SCRIPTS_DIR}/flash-btrfs-raid-image.sh ./flash-btrfs-raid-image.sh
+        chmod +x flash-btrfs-raid-image.sh
+    fi
 }
 
 tegraflash_custom_post() {
-    # Rename the first partitions name in the tegraflash tarball
-    mv "./${IMAGE_BASENAME}.${IMAGE_TEGRAFLASH_FS_TYPE}" "./${IMAGE_BASENAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}"
+    if [ "${IMAGE_TEGRAFLASH_FS_TYPE}" = "btrfs" ]; then
+        # Rename the first partitions name in the tegraflash tarball
+        mv "./${IMAGE_BASENAME}.${IMAGE_TEGRAFLASH_FS_TYPE}" "./${IMAGE_BASENAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}"
+    fi
 }
