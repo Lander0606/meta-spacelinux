@@ -1,0 +1,6 @@
+[Unit]
+Description=Check and repair the partition table
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/part-table-check.sh

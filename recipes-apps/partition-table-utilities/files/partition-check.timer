@@ -1,0 +1,10 @@
+[Unit]
+Description=Execute the partition table check each hour
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+Unit=partition-check.service
+
+[Install]
+WantedBy=timers.target
