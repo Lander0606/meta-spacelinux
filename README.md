@@ -3,9 +3,10 @@
 Space-applications embedded Linux distribution for **NVIDIA Jetson platforms** using Yocto Project tools and the [meta-tegra](https://github.com/OE4T/meta-tegra) BSP layer. The development of this distribution is part of a master's thesis ["Design and simplification of a Linux Operating System (OS) for space"](https://github.com/michielskobe/thesis-linux-in-space). This research is done in the context of the Master of Science program in the field of Electronics - ICT with specialization in software systems at KU Leuven in Leuven, Belgium.
 
 ## Features
-- A stripped version of LTS kernel 6.12
-- A fully-preemptible kernel
-- An optimized `btrfs` filesystem
+- Stripped and lightweight version of Linux LTS kernel 6.12
+- Optimizations for realtime applications (see wiki)
+- Optimized, RAID1-enabled `btrfs` filesystem
+- GPT partition table protection
 
 ## Prerequisites
 See the [Yocto Project Quick Build documentation](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) for information on setting up a build host.
