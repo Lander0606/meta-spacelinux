@@ -29,7 +29,7 @@ MACHINE_FEATURES:remove = "alsa wifi bluetooth ext2"
 MACHINE_EXTRA_RRECOMMENDS:remove = "kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus"
 
 # CPU 4 and 5 are tickless (adaptive tick mode)
-KERNEL_ARGS:append = " nohz_full=4,5"
+KERNEL_ARGS:append = " nohz_full=1,3,5 isolcpus=1,3,5 irqaffinity=0,2,4"
 
 # Spacelinux uses the newer linux-yocto kernel
 # Prefer the newest kernel if available
