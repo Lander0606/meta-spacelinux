@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# From: Kobe Michiels <kobe.michiels@outlook.com>
+# Date: 05-03-2025 2339
+
+# Instructions: Can be executed from the build dir by running: `../layers/meta-spacelinux/scripts/rebuild-swupdate-image-tegra`
+
+# Clean swupdate-image-tegra and base-files
+bitbake -c clean swupdate-image-tegra base-files
+
+# Compile swupdate-image-tegra and base-files
+bitbake -c compile swupdate-image-tegra base-files
+
+# Build spacelinux-image-base
+bitbake spacelinux-image-base 
+
+# Build swupdate-image-tegra
+bitbake swupdate-image-tegra
