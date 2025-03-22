@@ -6,6 +6,7 @@ SRC_URI += "\
     file://part-format.cfg \
     file://archive.cfg \
     file://disable-uboot.cfg \
+    file://btrfs.cfg \
 "
 
 DEPENDS += "e2fsprogs"
