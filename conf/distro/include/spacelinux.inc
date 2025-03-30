@@ -79,3 +79,6 @@ IMAGE_FSTYPES:append = " tar.gz"
 #CONFIG_BTRFS_FILESYSTEM = "${@'1' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "0"}"
 #IMAGE_FSTYPES:append = "${@' btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else ''}"
 #ROOTFS_FILENAME ?= "${@'${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.tar.gz"}"
+
+# KERNEL_ARGS:append = " initcall_debug ignore_loglevel"
+KERNEL_ARGS:append = " quiet"
