@@ -1,0 +1,26 @@
+From 92800d9d01025ca543a44c8f7e0b5a45d9420c6d Mon Sep 17 00:00:00 2001
+From: Kobe Michiels <kobe.michiels@outlook.com>
+Date: Sat, 22 Mar 2025 21:28:39 +0100
+Subject: [PATCH] Updated Makefile
+
+Upstream-Status: Inappropriate [configuration-specific]
+
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index ee17ca9..deb3886 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ obj-m += sw_ecc_protection.o
+ 
+ all:
+-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
++	make -C $(KERNEL_SRC) M=$(PWD) modules
+ 
+ clean:
+-	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) clean
++	make -C $(KERNEL_SRC) M=$(PWD) clean
+\ No newline at end of file

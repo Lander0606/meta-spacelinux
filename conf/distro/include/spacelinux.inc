@@ -77,11 +77,14 @@ SPACELINUX_FS_LABEL = "raidrootfs"
 KERNEL_ARGS:append = " root=LABEL=${SPACELINUX_FS_LABEL} rootwait"
 
 # Enable swupdate
-IMAGE_INSTALL:append = " swupdate"
-USE_REDUNDANT_FLASH_LAYOUT = "1"
+#IMAGE_INSTALL:append = " swupdate"
+#USE_REDUNDANT_FLASH_LAYOUT = "1"
 IMAGE_FSTYPES:append = " tar.gz"
-SWUPDATE_CORE_IMAGE_NAME = "spacelinux-image-base"
+#SWUPDATE_CORE_IMAGE_NAME = "spacelinux-image-base"
 
-CONFIG_BTRFS_FILESYSTEM = "${@'1' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "0"}"
-IMAGE_FSTYPES:append = "${@' btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else ''}"
-ROOTFS_FILENAME ?= "${@'${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.tar.gz"}"
+#CONFIG_BTRFS_FILESYSTEM = "${@'1' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "0"}"
+#IMAGE_FSTYPES:append = "${@' btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else ''}"
+#ROOTFS_FILENAME ?= "${@'${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.tar.gz"}"
+
+# KERNEL_ARGS:append = " initcall_debug ignore_loglevel"
+KERNEL_ARGS:append = " quiet"
