@@ -70,6 +70,12 @@ IMAGE_TEGRAFLASH_FS_TYPE = "btrfs"
 EXTRA_IMAGECMD:append:btrfs = " --csum sha256"
 EXTRA_IMAGECMD:remove:btrfs = " --shrink"
 
+# Filesystem label (for RAID configurations)
+SPACELINUX_FS_LABEL = "raidrootfs"
+
+# Add rootfs kernel args
+KERNEL_ARGS:append = " root=LABEL=${SPACELINUX_FS_LABEL} rootwait"
+
 # Enable swupdate
 IMAGE_INSTALL:append = " swupdate"
 USE_REDUNDANT_FLASH_LAYOUT = "1"
