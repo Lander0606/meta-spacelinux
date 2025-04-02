@@ -20,6 +20,8 @@ inherit image_types_btrfs_custom
 # Add extra files to tegraflash
 inherit image_types_tegra
 
+ROOTFS_POSTPROCESS_COMMAND += "add_filesystem_uuid"
+
 python __anonymous() {
     if d.getVar('IMAGE_TEGRAFLASH_FS_TYPE') == "btrfs":
         d.setVar('IMAGE_TEGRAFLASH_ROOTFS', "${IMGDEPLOYDIR}/${IMAGE_LINK_NAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}")
@@ -40,5 +42,13 @@ tegraflash_custom_post() {
     if [ "${IMAGE_TEGRAFLASH_FS_TYPE}" = "btrfs" ]; then
         # Rename the first partitions name in the tegraflash tarball
         mv "./${IMAGE_BASENAME}.${IMAGE_TEGRAFLASH_FS_TYPE}" "./${IMAGE_BASENAME}_part1.${IMAGE_TEGRAFLASH_FS_TYPE}"
+    fi
+}
+
+add_filesystem_uuid() {
+    if [ "${IMAGE_TEGRAFLASH_FS_TYPE}" = "btrfs" ]; then
+        echo "LABEL=${SPACELINUX_FS_LABEL}      /       btrfs      defaults     0  1" >> ${IMAGE_ROOTFS}/etc/fstab
+    else
+        echo "/dev/root      /       auto      defaults     1  1" >> ${IMAGE_ROOTFS}/etc/fstab
     fi
 }

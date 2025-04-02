@@ -12,7 +12,7 @@ IMAGE_CMD:btrfs() {
     dd if=/dev/zero of=${IMGDEPLOYDIR}/${IMAGE_NAME}_part2.btrfs seek=${size} count=0 bs=1024
     
     # Create btrfs filesystems from the previous created files
-    mkfs.btrfs ${EXTRA_IMAGECMD} -r ${IMAGE_ROOTFS} ${IMGDEPLOYDIR}/${IMAGE_NAME}_part1.btrfs
+    mkfs.btrfs ${EXTRA_IMAGECMD} -L ${SPACELINUX_FS_LABEL} -r ${IMAGE_ROOTFS} ${IMGDEPLOYDIR}/${IMAGE_NAME}_part1.btrfs
     mkfs.btrfs ${EXTRA_IMAGECMD} -r ${IMAGE_ROOTFS} ${IMGDEPLOYDIR}/${IMAGE_NAME}_part2.btrfs
     
     # Create symlinks for the two btrfs partitions (like the Yocto convention)

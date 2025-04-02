@@ -5,6 +5,5 @@ Subject: [PATCH] Change of fstab for Btrfs rootfs
 Upstream-Status: Inappropriate [configuration-specific]
 --- a/fstab
 +++ b/fstab
-@@ -1,1 +1,1 @@
+@@ -1,1 +1,0 @@
 -/dev/root            /                    auto       defaults              1  1
-+/dev/root            /                    btrfs      defaults              0  1
