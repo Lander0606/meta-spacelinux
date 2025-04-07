@@ -1,0 +1,41 @@
+From 4dcb754c6659e8aaf88b1a135900a897a02cb5b7 Mon Sep 17 00:00:00 2001
+From: Lander Van Loock <landervanloock@gmail.com>
+Date: Mon, 7 Apr 2025 23:32:37 +0200
+Subject: [PATCH] Disable unused pcie devices
+
+Upstream-Status: Inappropriate [configuration-specific]
+---
+ tegra234-p3768-0000+p3767.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tegra234-p3768-0000+p3767.dtsi b/tegra234-p3768-0000+p3767.dtsi
+index 19340d1..26acb12 100644
+--- a/tegra234-p3768-0000+p3767.dtsi
++++ b/tegra234-p3768-0000+p3767.dtsi
+@@ -167,7 +167,7 @@
+ 
+ 		/* C1 - M.2 Key-E */
+ 		pcie@14100000 {
+-			status = "okay";
++			status = "disabled";
+ 
+ 			vddio-pex-ctl-supply = <&vdd_1v8_ao>;
+ 
+@@ -177,7 +177,7 @@
+ 
+ 		/* C4 - M.2 Key-M */
+ 		pcie@14160000 {
+-			status = "okay";
++			status = "disabled";
+ 
+ 			vddio-pex-ctl-supply = <&vdd_1v8_ao>;
+ 
+@@ -200,7 +200,7 @@
+ 
+ 		/* C7 - M.2 Key-M */
+ 		pcie@141e0000 {
+-			status = "okay";
++			status = "disabled";
+ 
+ 			vddio-pex-ctl-supply = <&vdd_1v8_ao>;
+ 
