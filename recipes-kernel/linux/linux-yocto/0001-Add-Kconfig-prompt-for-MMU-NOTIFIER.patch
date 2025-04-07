@@ -1,0 +1,27 @@
+From 4c57cadd365ff61c4e731b9dab798b669a100ec6 Mon Sep 17 00:00:00 2001
+From: Lander Van Loock <landervanloock@gmail.com>
+Date: Mon, 7 Apr 2025 13:46:30 +0200
+Subject: [PATCH] Add Kconfig prompt for MMU NOTIFIER
+
+Upstream-Status: Inappropriate [configuration-specific]
+---
+ mm/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/Kconfig b/mm/Kconfig
+index 33fa51d608dc..29c932b1b92e 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -722,7 +722,8 @@ config BOUNCE
+ 	  selected, but you may say n to override this.
+ 
+ config MMU_NOTIFIER
+-	bool
++	bool "MMU NOTIFIERS"
++	default y
+ 	select INTERVAL_TREE
+ 
+ config KSM
+-- 
+2.49.0
+

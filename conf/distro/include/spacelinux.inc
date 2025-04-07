@@ -19,14 +19,15 @@ REQUIRED_TD_BBLAYERS_CONF_VERSION = "${DISTRO}-5"
 LOCALCONF_VERSION = "2"
 
 # Default: SPACELINUX_DISTRO_FEATURES = "acl alsa bluetooth debuginfod ext2 ipv4 ipv6 pcmcia usbgadget usbhost wifi xattr nfs zeroconf pci 3g nfc x11 vfat seccomp largefile opengl ptest multiarch vulkan systemd pam virtualization usrmerge systemd usrmerge pulseaudio gobject-introspection-data ldconfig"
-SPACELINUX_DISTRO_FEATURES = "acl ipv4 ipv6 usbgadget usbhost xattr zeroconf pci vfat seccomp largefile opengl ptest vulkan systemd pam virtualization usrmerge gobject-introspection-data ldconfig"
+SPACELINUX_DISTRO_FEATURES = "acl ipv4 ipv6 usbgadget usbhost xattr zeroconf pci vfat seccomp largefile ptest systemd pam usrmerge gobject-introspection-data ldconfig"
 DISTRO_FEATURES ?= "${SPACELINUX_DISTRO_FEATURES}"
 
 # Remove machine features
-MACHINE_FEATURES:remove = "alsa wifi bluetooth ext2"
+MACHINE_FEATURES:remove = "alsa wifi bluetooth ext2 cuda"
 
-# Remove unused machine recommended modules
-MACHINE_EXTRA_RRECOMMENDS:remove = "kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus"
+# Remove unused machine recommended/depends modules
+MACHINE_EXTRA_RDEPENDS:remove = " nvidia-kernel-oot-display"
+MACHINE_EXTRA_RRECOMMENDS:remove = " kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus kernel-module-rtk-btusb kernel-module-rtw88-8822ce linux-firmware-rtl8822"
 
 # CPU 4 and 5 are tickless (adaptive tick mode)
 KERNEL_ARGS:append = " nohz_full=1,3,5 isolcpus=1,3,5 irqaffinity=0,2,4"
