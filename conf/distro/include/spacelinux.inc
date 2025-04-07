@@ -75,7 +75,10 @@ EXTRA_IMAGECMD:remove:btrfs = " --shrink"
 SPACELINUX_FS_LABEL = "raidrootfs"
 
 # Add rootfs kernel args
-KERNEL_ARGS:append = " root=LABEL=${SPACELINUX_FS_LABEL} rootwait"
+KERNEL_ARGS:append = " root=/dev/mmcblk0p1 rootfstype=btrfs rootwait"
+
+# Add btrfs progs to the initramfs to allow multi device mouting
+TEGRA_INITRD_INSTALL:append = "btrfs-tools"
 
 # Enable swupdate
 #IMAGE_INSTALL:append = " swupdate"
