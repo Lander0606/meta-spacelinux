@@ -12,7 +12,7 @@ CORE_IMAGE_BASE_INSTALL += "packagegroup-spacelinux-systemd"
 inherit nopackages
 
 # Add some extra packages to the images
-IMAGE_INSTALL:append = " htop btrfs-tools gptfdisk partition-table-utilities"
+IMAGE_INSTALL:append = " htop btrfs-tools gptfdisk"
 
 # Create two identical filesystem files (for the two partitions)
 inherit image_types_btrfs_custom
