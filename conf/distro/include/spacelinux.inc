@@ -30,7 +30,7 @@ MACHINE_EXTRA_RDEPENDS:remove = " nvidia-kernel-oot-display"
 MACHINE_EXTRA_RRECOMMENDS:remove = " kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus kernel-module-rtk-btusb kernel-module-rtw88-8822ce linux-firmware-rtl8822"
 
 # CPU 4 and 5 are tickless (adaptive tick mode)
-KERNEL_ARGS:append = " nohz_full=1,3,5 isolcpus=1,3,5 irqaffinity=0,2,4"
+# KERNEL_ARGS:append = " nohz_full=1,3,5 isolcpus=1,3,5 irqaffinity=0,2,4"
 
 # Spacelinux uses the newer linux-yocto kernel
 # Prefer the newest kernel if available
@@ -90,5 +90,5 @@ IMAGE_FSTYPES:append = " tar.gz"
 #IMAGE_FSTYPES:append = "${@' btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else ''}"
 #ROOTFS_FILENAME ?= "${@'${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.btrfs' if IMAGE_TEGRAFLASH_FS_TYPE == 'btrfs' else "${SWUPDATE_CORE_IMAGE_NAME}-${MACHINE}.rootfs.tar.gz"}"
 
-# KERNEL_ARGS:append = " initcall_debug ignore_loglevel"
+# KERNEL_ARGS:append = " initcall_debug"
 KERNEL_ARGS:append = " quiet"
