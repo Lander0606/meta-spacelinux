@@ -75,10 +75,10 @@ EXTRA_IMAGECMD:remove:btrfs = " --shrink"
 SPACELINUX_FS_LABEL = "raidrootfs"
 
 # Add rootfs kernel args
-KERNEL_ARGS:append = " root=/dev/mmcblk0p1 rootfstype=btrfs rootwait"
+KERNEL_ARGS:append = " root=/dev/mmcblk0p1 rootfstype=${IMAGE_TEGRAFLASH_FS_TYPE} rootwait"
 
 # Add btrfs progs to the initramfs to allow multi device mouting
-TEGRA_INITRD_INSTALL:append = "btrfs-tools"
+TEGRA_INITRD_INSTALL:append = "btrfs-tools nv-kernel-module-host1x nv-kernel-module-tegra-se"
 
 # Enable swupdate
 #IMAGE_INSTALL:append = " swupdate"

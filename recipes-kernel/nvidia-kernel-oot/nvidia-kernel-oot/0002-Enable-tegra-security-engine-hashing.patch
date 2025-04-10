@@ -1,0 +1,23 @@
+From 3e3b89e0a51c823e260330ad0d29c5da7fe6b38e Mon Sep 17 00:00:00 2001
+From: Lander Van Loock <landervanloock@gmail.com>
+Date: Thu, 10 Apr 2025 12:25:27 +0200
+Subject: [PATCH] Enable tegra security engine hashing
+
+Upstream-Status: Inappropriate [configuration-specific]
+---
+ nv-soc/tegra234-soc-overlay.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/nv-soc/tegra234-soc-overlay.dtsi b/nv-soc/tegra234-soc-overlay.dtsi
+index d67b06e..fd5650f 100644
+--- a/nv-soc/tegra234-soc-overlay.dtsi
++++ b/nv-soc/tegra234-soc-overlay.dtsi
+@@ -653,7 +653,7 @@
+ 						<&mc TEGRA234_MEMORY_CLIENT_SESWR &emc>;
+ 				interconnect-names = "read", "write";
+ 
+-				status = "disabled";
++				status = "okay";
+ 			};
+ 
+ 			tsec@15500000 {
