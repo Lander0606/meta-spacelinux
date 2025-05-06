@@ -30,7 +30,7 @@ MACHINE_EXTRA_RDEPENDS:remove = " nvidia-kernel-oot-display"
 MACHINE_EXTRA_RRECOMMENDS:remove = " kernel-module-snd-hda-tegra kernel-module-snd-hda-codec-hdmi nvidia-kernel-oot-cameras nvidia-kernel-oot-canbus kernel-module-rtk-btusb kernel-module-rtw88-8822ce linux-firmware-rtl8822"
 
 # CPU 4 and 5 are tickless (adaptive tick mode)
-KERNEL_ARGS:append = " nohz_full=2,3 isolcpus=2,3 irqaffinity=0,1,4,5"
+KERNEL_ARGS:append = " isolcpus=nohz,domain,managed_irq,4,5 irqaffinity=0,1,2,3 clocksource.arm_arch_timer.evtstream=0"
 
 # Spacelinux uses the newer linux-yocto kernel
 # Prefer the newest kernel if available
@@ -46,6 +46,7 @@ PACKAGE_CLASSES ?= "package_rpm"
 SANITY_TESTED_DISTROS ?= " \
             fedora-40 \n \
             fedora-41 \n \
+            fedora-42 \n \
             ubuntu-20.04 \n \
             ubuntu-22.04 \n \
             ubuntu-24.04 \n \

@@ -1,0 +1,51 @@
+From cd6df646846264dc10bb31eae219db98f01899f5 Mon Sep 17 00:00:00 2001
+From: Lander Van Loock <landervanloock@gmail.com>
+Date: Tue, 6 May 2025 14:06:53 +0200
+Subject: [PATCH] Disable broadcast ticks via IPI to core 4 and 5
+
+Upstream-Status: Inappropriate [configuration-specific]
+
+---
+ kernel/time/tick-broadcast.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
+
+diff --git a/kernel/time/tick-broadcast.c b/kernel/time/tick-broadcast.c
+index ed58eebb4e8f..6d420f6ca66f 100644
+--- a/kernel/time/tick-broadcast.c
++++ b/kernel/time/tick-broadcast.c
+@@ -19,6 +19,14 @@
+ 
+ #include "tick-internal.h"
+ 
++/* --- Latency-patch forward decls ----------------------------- */
++#if IS_ENABLED(CONFIG_TICK_ONESHOT)
++struct cpumask *tick_get_broadcast_oneshot_mask(void);
++static cpumask_var_t tick_broadcast_pending_mask;
++static cpumask_var_t tick_broadcast_force_mask;
++#endif
++/* ------------------------------------------------------------- */
++
+ /*
+  * Broadcast support for broken x86 hardware, where the local apic
+  * timer stops in C3 state.
+@@ -321,6 +329,20 @@ int tick_device_uses_broadcast(struct clock_event_device *dev, int cpu)
+ 			break;
+ 		}
+ 	}
++
++		/* Latency-fix: when the local PPI-timer is up      */
++	/* (so, this is the case in tick_device_uses_broadcast()), */
++	/* we remove CPU 4 and 5 from all broadcast masks */
++	if (cpu == 4 || cpu == 5) {
++		cpumask_clear_cpu(cpu, tick_broadcast_mask);
++		cpumask_clear_cpu(cpu, tick_broadcast_on);
++#if IS_ENABLED(CONFIG_TICK_ONESHOT)
++		cpumask_clear_cpu(cpu, tick_get_broadcast_oneshot_mask());
++		cpumask_clear_cpu(cpu, tick_broadcast_pending_mask);
++		cpumask_clear_cpu(cpu, tick_broadcast_force_mask);
++#endif
++	} 
++
+ 	raw_spin_unlock_irqrestore(&tick_broadcast_lock, flags);
+ 	return ret;
+ }

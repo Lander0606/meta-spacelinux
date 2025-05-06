@@ -2,6 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI:append:tegra = " \
     file://0001-Add-Kconfig-prompt-for-MMU-NOTIFIER.patch \
+    file://0002-Disable-broadcast-ticks-via-IPI-to-core-4-and-5.patch \
     file://remove_other_platforms.cfg \
     file://enable_full_preemptible.cfg \
     file://remove_unneccessary_drivers.cfg \
