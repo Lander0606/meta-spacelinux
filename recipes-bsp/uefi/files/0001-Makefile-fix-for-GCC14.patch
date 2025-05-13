@@ -1,0 +1,40 @@
+From 4529dbbe056d834a22a95c304019ccc541c99351 Mon Sep 17 00:00:00 2001
+From: Lander Van Loock <landervanloock@gmail.com>
+Date: Thu, 8 May 2025 19:19:41 +0200
+Subject: [PATCH] Makefile fix for GCC14
+
+Upstream-Status: Inappropriate [configuration-specific]
+---
+ BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile | 2 +-
+ BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile b/BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile
+index 746d58b5e2..bac8d2f782 100644
+--- a/BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile
++++ b/BaseTools/Source/C/VfrCompile/Pccts/antlr/makefile
+@@ -169,7 +169,7 @@ ANTLR=${BIN_DIR}/antlr
+ DLG=${BIN_DIR}/dlg
+ OBJ_EXT=o
+ OUT_OBJ = -o
+-CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN $(COTHER) -DZZLEXBUFSIZE=65536
++CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN $(COTHER) -DZZLEXBUFSIZE=65536 -std=gnu89
+ CPPFLAGS=
+ #
+ # SGI Users, use this CFLAGS
+diff --git a/BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile b/BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile
+index e45ac98e04..5c03225896 100644
+--- a/BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile
++++ b/BaseTools/Source/C/VfrCompile/Pccts/dlg/makefile
+@@ -123,7 +123,7 @@ endif
+ COPT=-O
+ ANTLR=${BIN_DIR}/antlr
+ DLG=${BIN_DIR}/dlg
+-CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN -DZZLEXBUFSIZE=65536
++CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN -DZZLEXBUFSIZE=65536 -std=gnu89
+ CPPFLAGS=
+ OBJ_EXT=o
+ OUT_OBJ = -o
+-- 
+2.49.0
+
