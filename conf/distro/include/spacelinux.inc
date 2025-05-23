@@ -1,7 +1,7 @@
 DISTRO = "spacelinux"
 DISTRO_NAME = "SpaceLinux (Tegra Linux for Space)"
-DISTRO_VERSION_BASE = "1.0.3"
-DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}"
+DISTRO_VERSION_BASE = "1.0.2"
+DISTRO_VERSION = "${DISTRO_VERSION_BASE}+snapshot-${DATE}+kernel_6.6"
 DISTRO_CODENAME = "master"
 SDK_VENDOR = "-slsdk"
 SDK_VERSION := "${@'${DISTRO_VERSION}'.replace('snapshot-${DATE}','snapshot')}"
@@ -35,8 +35,8 @@ KERNEL_ARGS:append = " isolcpus=nohz,domain,managed_irq,4,5 irqaffinity=0,1,2,3 
 # Spacelinux uses the newer linux-yocto kernel
 # Prefer the newest kernel if available
 PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
-PREFERRED_VERSION_linux-yocto ?= "6.12%"
-PREFERRED_VERSION_linux-yocto-rt ?= "6.12%"
+PREFERRED_VERSION_linux-yocto ?= "6.6%"
+PREFERRED_VERSION_linux-yocto-rt ?= "6.6%"
 
 SDK_NAME = "${DISTRO}-${TCLIBC}-${SDKMACHINE}-${IMAGE_BASENAME}-${TUNE_PKGARCH}-${MACHINE}"
 SDKPATHINSTALL = "/opt/${DISTRO}/${SDK_VERSION}"
