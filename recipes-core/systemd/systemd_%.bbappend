@@ -13,9 +13,9 @@ FILES_${PN} += " \
 
 do_install:append(){
     install -d ${D}${sysconfdir}/systemd/network
-    install -m 0644 ${WORKDIR}/sources-unpack/00-eth0.network ${D}${sysconfdir}/systemd/network
+    install -m 0644 ${WORKDIR}/00-eth0.network ${D}${sysconfdir}/systemd/network
 
     install -d ${D}/${systemd_unitdir}/system/ 
-    install -m 0644 ${WORKDIR}/sources-unpack/systemd-networkd-wait-online.service ${D}/${systemd_unitdir}/system/ 
+    install -m 0644 ${WORKDIR}/systemd-networkd-wait-online.service ${D}/${systemd_unitdir}/system/ 
 }
 

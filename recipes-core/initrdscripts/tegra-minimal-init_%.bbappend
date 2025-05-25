@@ -2,7 +2,7 @@ python do_unpack:append() {
     import os
     import subprocess
 
-    s = d.getVar('UNPACKDIR')
+    s = d.getVar('WORKDIR')
     filepath = os.path.join(s, "init-boot.sh")
 
     if os.path.isfile(filepath):

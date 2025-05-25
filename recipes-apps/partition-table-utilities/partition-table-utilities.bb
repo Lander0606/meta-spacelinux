@@ -10,8 +10,8 @@ SRC_URI = "file://part-table-backup.sh \
 
 inherit systemd
 
-S = "${WORKDIR}/sources"
-UNPACKDIR = "${S}"
+S = "${WORKDIR}"
+
 
 RDEPENDS:${PN} += "bash gptfdisk"
 
