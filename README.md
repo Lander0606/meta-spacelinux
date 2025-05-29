@@ -3,12 +3,15 @@
 Space-applications embedded Linux distribution for **NVIDIA Jetson platforms** using Yocto Project tools and the [meta-tegra](https://github.com/OE4T/meta-tegra) BSP layer. The development of this distribution is part of a master's thesis ["Design and simplification of a Linux Operating System (OS) for space"](https://github.com/michielskobe/thesis-linux-in-space). This research is done in the context of the Master of Science program in the field of Electronics - ICT with specialization in software systems at KU Leuven in Leuven, Belgium.
 
 ## Features
-- Stripped and lightweight version of Linux LTS kernel 6.12
-- Optimizations for realtime applications (see wiki)
+- Stripped and lightweight version of the latest Linux kernels
+- Custom power modes for suitable power management in space
+- Kernel optimizations for realtime applications
 - Optimized, RAID1-enabled `btrfs` filesystem
-- GPT partition table protection
+- GPT partition table safeguarding
 - Extremely fast boottimes to keep uptime high
-- swupdate-ready
+- `swupdate`-ready
+
+More information about the features can be found on the [Wiki](https://github.com/Lander0606/meta-spacelinux/wiki).
 
 ## Prerequisites
 See the [Yocto Project Quick Build documentation](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html) for information on setting up a build host. This layer has been tested with Ubuntu (22.04 / 24.04) and Fedora (40 / 41) as build host.
@@ -27,7 +30,7 @@ Since this distribution is created for NVIDIA Jetson platforms, the `meta-tegra`
 $ git clone https://github.com/Lander0606/meta-spacelinux/
 ```
 
-- Change to a new branch if needed. Other branches feature other versions of the distro. For now, only 2 branches exist: the main branch features a stable distro based on **Linux kernel 6.6**. The _kernel-6.12_ branch features the current testing version of the distro based on the newest LTS release **Linux kernel 6.12**.
+- Change to a new branch if needed. Other branches support other releases of the Yocto Project.
 
 - Clone the `meta-openembedded` layer into the `layers` directory of the project. Some handy applications from this layer are used in the distro. From `meta-openembedded`, only `meta-oe` is required.
 
@@ -46,13 +49,12 @@ BBLAYERS ?= " \
 
 ## Images
 
-The `spacelinux` distribution includes the following image recipes:
+The `spacelinux` distribution includes the following image recipe:
 
 | Image name | Description |
 | ---------- | ----------- |
 | spacelinux-image-base | Base image featuring all device drivers, a cmdline interface and ssh |
-| spacelinux-image-dev  | Image featuring everything in the base image, and some dev tools     |
 
 ## Issues
 
-Use the [Issues](https://github.com/Lander0606/meta-spacelinux/issues)tab for reporting build or runtime issues with Spacelinux Yocto build targets. When reporting build or runtime issues, please include as much information about your environment as you can. For example, the target hardware you are building for, branch/version information, etc.
+Use the [Issues](https://github.com/Lander0606/meta-spacelinux/issues) tab for reporting build or runtime issues with Spacelinux Yocto build targets. When reporting build or runtime issues, please include as much information about your environment as you can. For example, the target hardware you are building for, branch/version information, etc.
